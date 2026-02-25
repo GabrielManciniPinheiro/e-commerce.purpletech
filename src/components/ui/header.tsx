@@ -1,3 +1,5 @@
+"use client";
+
 import { Card } from "./card";
 import { Button } from "./button";
 import {
@@ -7,10 +9,24 @@ import {
   ShoppingCartIcon,
   ListOrderedIcon,
   HomeIcon,
+  LogOutIcon,
 } from "lucide-react";
 import { SheetTrigger, Sheet, SheetContent, SheetHeader } from "./sheet";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { Separator } from "./separator";
 
 const Header = () => {
+  const { status, data } = useSession();
+
+  const HandleLoginClick = async () => {
+    await signIn();
+  };
+
+  const HandleLogOutClick = async () => {
+    await signOut();
+  };
+
   return (
     <Card className="flex items-center justify-between p-[1.875rem]">
       <Sheet>
@@ -25,10 +41,44 @@ const Header = () => {
             <h1>Menu</h1>
           </SheetHeader>
 
-          <div className="mt-2 flex flex-col gap-3">
-            <Button variant={"secondary"} className="w-full">
-              <LogInIcon /> Fazer Login
-            </Button>
+          {status === "authenticated" && data?.user && (
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2 py-4">
+                <Avatar>
+                  <AvatarFallback>
+                    {data.user.name?.[0].toUpperCase()}
+                  </AvatarFallback>
+
+                  {data.user.image && <AvatarImage src={data.user.image} />}
+                </Avatar>
+
+                <p className="font-medium">{data.user.name}</p>
+              </div>
+              <Separator />
+            </div>
+          )}
+
+          <div className="mt-4 flex flex-col gap-3">
+            {status === "unauthenticated" && (
+              <Button
+                onClick={HandleLoginClick}
+                variant={"secondary"}
+                className="w-full"
+              >
+                <LogInIcon /> Fazer Login
+              </Button>
+            )}
+
+            {status === "authenticated" && (
+              <Button
+                onClick={HandleLogOutClick}
+                variant={"secondary"}
+                className="w-full"
+              >
+                <LogOutIcon />
+                Fazer Logout
+              </Button>
+            )}
 
             <Button variant={"outline"} className="w-full hover:bg-primary/70">
               <HomeIcon />
