@@ -30,17 +30,17 @@ const Header = () => {
               <LogInIcon /> Fazer Login
             </Button>
 
-            <Button variant={"outline"} className="w-full">
+            <Button variant={"outline"} className="w-full hover:bg-primary/70">
               <HomeIcon />
               Início
             </Button>
 
-            <Button variant={"outline"} className="w-full">
+            <Button variant={"outline"} className="w-full hover:bg-primary/70">
               <CirclePercentIcon />
               Ofertas
             </Button>
 
-            <Button variant={"outline"} className="w-full">
+            <Button variant={"outline"} className="w-full hover:bg-primary/70">
               <ListOrderedIcon />
               Catálogo
             </Button>
