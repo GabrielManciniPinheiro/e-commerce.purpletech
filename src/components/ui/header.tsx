@@ -11,10 +11,17 @@ import {
   HomeIcon,
   LogOutIcon,
 } from "lucide-react";
-import { SheetTrigger, Sheet, SheetContent, SheetHeader } from "./sheet";
+import {
+  SheetTrigger,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetClose,
+} from "./sheet";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Separator } from "./separator";
+import Link from "next/link";
 
 const Header = () => {
   const { status, data } = useSession();
@@ -90,10 +97,17 @@ const Header = () => {
               Ofertas
             </Button>
 
-            <Button variant={"outline"} className="w-full hover:bg-primary/70">
-              <ListOrderedIcon />
-              Catálogo
-            </Button>
+            <SheetClose asChild>
+              <Link href="/catalog">
+                <Button
+                  variant={"outline"}
+                  className="w-full hover:bg-primary/70"
+                >
+                  <ListOrderedIcon />
+                  Catálogo
+                </Button>
+              </Link>
+            </SheetClose>
           </div>
         </SheetContent>
       </Sheet>
