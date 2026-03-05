@@ -22,6 +22,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Separator } from "./separator";
 import Link from "next/link";
+import Image from "next/image";
 
 const Header = () => {
   const { status, data } = useSession();
@@ -112,7 +113,16 @@ const Header = () => {
         </SheetContent>
       </Sheet>
 
-      <Link href={"/"}>
+      <Link href={"/"} className="flex items-center gap-3">
+        {/* A logo entra aqui */}
+        <Image
+          src="/PurpleTechLogo.png"
+          alt="Mascote Techteech Store"
+          width={75}
+          height={75}
+          className="object-contain"
+        />
+
         <h1 className="text-lg font-bold">
           <span className="text-primary">PurpleTech</span> Store{" "}
         </h1>
