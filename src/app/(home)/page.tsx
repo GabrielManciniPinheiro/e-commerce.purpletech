@@ -1,5 +1,3 @@
-import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Categories from "./components/categories";
 import { prismaClient } from "@/lib/prisma";
 import ProductList from "../../components/ui/product-list";
