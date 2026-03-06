@@ -23,6 +23,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Separator } from "./separator";
 import Link from "next/link";
 import Image from "next/image";
+import Cart from "./cart";
 
 const Header = () => {
   const { status, data } = useSession();
@@ -128,9 +129,17 @@ const Header = () => {
         </h1>
       </Link>
 
-      <Button size="icon">
-        <ShoppingCartIcon />
-      </Button>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button size="icon">
+            <ShoppingCartIcon />
+          </Button>
+        </SheetTrigger>
+
+        <SheetContent>
+          <Cart />
+        </SheetContent>
+      </Sheet>
     </Card>
   );
 };
