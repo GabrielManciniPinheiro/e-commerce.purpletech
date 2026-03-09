@@ -31,5 +31,7 @@ export const createCheckout = async (products: CartProduct[]) => {
   });
 
   //RETORNAR O CHECKOUT
-  return checkout;
+  return {
+    url: checkout.url,
+  };
 };
