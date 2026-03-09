@@ -89,15 +89,25 @@ const Header = () => {
               </Button>
             )}
 
-            <Button variant={"outline"} className="w-full hover:bg-primary/70">
-              <HomeIcon />
-              Início
-            </Button>
+            <SheetClose asChild>
+              <Link href="/">
+                <Button
+                  variant={"outline"}
+                  className="w-full hover:bg-primary/70"
+                >
+                  <HomeIcon />
+                  Início
+                </Button>
+              </Link>
 
-            <Button variant={"outline"} className="w-full hover:bg-primary/70">
-              <CirclePercentIcon />
-              Ofertas
-            </Button>
+              <Button
+                variant={"outline"}
+                className="w-full hover:bg-primary/70"
+              >
+                <CirclePercentIcon />
+                Ofertas
+              </Button>
+            </SheetClose>
 
             <SheetClose asChild>
               <Link href="/catalog">
