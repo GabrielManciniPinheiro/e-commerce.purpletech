@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "prisma generate",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/order/payment-success"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -27,6 +29,7 @@
     "next": "13.5.11",
     "next-auth": "^4.24.13",
     "react": "^18",
+    "react-confetti": "^6.4.0",
     "react-dom": "^18",
     "stripe": "^20.4.1",
     "tailwind-merge": "^3.5.0",

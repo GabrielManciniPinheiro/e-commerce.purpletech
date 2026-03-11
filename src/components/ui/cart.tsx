@@ -11,15 +11,33 @@ import { ScrollArea } from "./scroll-area";
 import { Button } from "./button";
 import { createCheckout } from "@/actions/checkout";
 import { loadStripe } from "@stripe/stripe-js";
+import { createOrder } from "@/actions/order";
+import { signIn, useSession } from "next-auth/react";
 
 const Cart = () => {
+  const { data } = useSession();
+
   const { products, subtotal, total, totalDiscount } = useContext(CartContext);
 
   const handleFinishPurchaseClick = async () => {
-    const checkout = await createCheckout(products);
+    if (!data?.user) {
+      // Redireciona para o login do NextAuth
+      signIn();
+      return;
+    }
 
+    // 1. Cria o pedido no banco
+    const order = await createOrder(products, (data?.user as any).id);
+
+    // 2. Chama a Server Action do Checkout
+    const checkout = await createCheckout(products, order.id);
+
+    // 3. Redireciona usando a URL retornada pelo Stripe no servidor
     if (checkout?.url) {
       window.location.href = checkout.url;
+    } else {
+      console.error("Erro ao recuperar a URL de checkout");
+      // Aqui você pode disparar um toast de erro se tiver o shadcn/ui toast
     }
   };
 
