@@ -4,7 +4,6 @@ import { computeProductTotalPrice } from "@/helpers/product";
 import { prismaClient } from "@/lib/prisma";
 import { PercentIcon } from "lucide-react";
 
-// Adicione esta linha aqui:
 export const dynamic = "force-dynamic";
 
 const DealsPage = async () => {
