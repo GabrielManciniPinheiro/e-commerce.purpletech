@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { prismaClient } from "@/lib/prisma";
 import OrderItem from "./components/order-item";
 
+export const dynamic = "force-dynamic";
+
 async function OrderPage() {
   const user = getServerSession(authOptions);
 
