@@ -1,8 +1,8 @@
 "use client";
 
-import { ShoppingCartIcon } from "lucide-react";
+import { ShoppingCartIcon, Loader2Icon } from "lucide-react";
 import { Badge } from "./badge";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "@/providers/cart";
 import { computeProductTotalPrice } from "@/helpers/product";
 import CartItem from "./cart-item";
@@ -10,34 +10,40 @@ import { Separator } from "./separator";
 import { ScrollArea } from "./scroll-area";
 import { Button } from "./button";
 import { createCheckout } from "@/actions/checkout";
-import { loadStripe } from "@stripe/stripe-js";
 import { createOrder } from "@/actions/order";
 import { signIn, useSession } from "next-auth/react";
 
 const Cart = () => {
-  const { data } = useSession();
+  const { data, status } = useSession(); // Adicionamos o status para controle
+  const [isLoading, setIsLoading] = useState(false);
 
   const { products, subtotal, total, totalDiscount } = useContext(CartContext);
 
   const handleFinishPurchaseClick = async () => {
+    // 1. Verifica se o usuário está logado
     if (!data?.user) {
-      // Redireciona para o login do NextAuth
-      signIn();
+      signIn("google");
       return;
     }
 
-    // 1. Cria o pedido no banco
-    const order = await createOrder(products, (data?.user as any).id);
+    setIsLoading(true);
 
-    // 2. Chama a Server Action do Checkout
-    const checkout = await createCheckout(products, order.id);
+    try {
+      // 2. Cria o pedido no banco
+      // Usamos o optional chaining (?.) para segurança total
+      const order = await createOrder(products, (data?.user as any).id);
 
-    // 3. Redireciona usando a URL retornada pelo Stripe no servidor
-    if (checkout?.url) {
-      window.location.href = checkout.url;
-    } else {
-      console.error("Erro ao recuperar a URL de checkout");
-      // Aqui você pode disparar um toast de erro se tiver o shadcn/ui toast
+      // 3. Chama a Server Action do Checkout
+      const checkout = await createCheckout(products, order.id);
+
+      // 4. Redireciona
+      if (checkout?.url) {
+        window.location.href = checkout.url;
+      }
+    } catch (error) {
+      console.error("Erro ao finalizar compra:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,7 +69,7 @@ const Cart = () => {
               ))
             ) : (
               <p className="text-center font-semibold">
-                Você ainda não possui nenhum produto no carrinho.{" "}
+                Você ainda não possui nenhum produto no carrinho.
               </p>
             )}
           </div>
@@ -103,7 +109,11 @@ const Cart = () => {
           <Button
             className="mt-7 font-bold uppercase"
             onClick={handleFinishPurchaseClick}
+            disabled={isLoading} // Desabilita o botão enquanto processa
           >
+            {isLoading ? (
+              <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+            ) : null}
             Finalizar Compra
           </Button>
         </div>

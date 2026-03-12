@@ -3,6 +3,8 @@ import { prismaClient } from "@/lib/prisma";
 import { ShapesIcon } from "lucide-react";
 import CategoryItem from "./components/category-item";
 
+export const dynamic = "force-dynamic";
+
 const CatalogPage = async () => {
   const categories = await prismaClient.category.findMany({});
 

@@ -4,6 +4,9 @@ import { computeProductTotalPrice } from "@/helpers/product";
 import { prismaClient } from "@/lib/prisma";
 import { PercentIcon } from "lucide-react";
 
+// Adicione esta linha aqui:
+export const dynamic = "force-dynamic";
+
 const DealsPage = async () => {
   const deals = await prismaClient.product.findMany({
     where: {
@@ -15,7 +18,10 @@ const DealsPage = async () => {
 
   return (
     <div className="flex flex-col gap-8 p-5">
-      <Badge>
+      <Badge
+        className="w-fit gap-1 rounded-xl border-2 border-primary px-3"
+        variant="outline"
+      >
         <PercentIcon size={16} />
         Ofertas
       </Badge>
